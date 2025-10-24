@@ -12,7 +12,3 @@ A lightweight, interactive business plan tool.
 - Break-even analysis
 - Editable sections
 - PDF export" > README.md
-
-git add README.md
-git commit -m "Add README with live demo link"
-git push origin main
