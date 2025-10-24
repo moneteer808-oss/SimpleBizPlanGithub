@@ -3,8 +3,36 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Interactive Business Plan Generator v4</title>
+<title>Interactive Business Plan Generator</title>
 <style>
+  header {
+  position: sticky; 
+  top: 0; 
+  background: #1a1a1a; 
+  color: white;
+  padding: 12px 20px; 
+  display: flex; 
+  justify-content: space-between;
+  align-items: center; 
+  z-index: 1000;
+}
+header h1 { margin: 0; font-size: 18px; }
+header button { margin-left: 10px; }
+main { padding: 20px; max-width: 1000px; margin: auto; }
+button {
+  padding: 8px 14px; 
+  background: #007bff; 
+  color: white; 
+  border: none;
+  border-radius: 5px; 
+  cursor: pointer;
+}
+button:hover { background: #0056b3; }
+canvas, table { max-width: 100%; }
+@media (max-width: 600px) {
+  header h1 { font-size: 16px; }
+  button { padding: 6px 10px; font-size: 14px; }
+}
 :root{--bg:#f9fafb;--card:#fff;--muted:#6b7280;--accent:#1e293b;}
 body{font-family:Arial, sans-serif;background:var(--bg);margin:0;color:#111;padding:20px;}
 .wrap{max-width:1100px;margin:0 auto;}
@@ -51,19 +79,31 @@ body.printing .button {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-  <script>
-  // Whop Integration for Simple Version
-  const urlParams = new URLSearchParams(window.location.search);
-  const whopUser = urlParams.get('whop_user');
+<script>
+const _p = [83, 105, 109, 112, 108, 101, 84, 101, 115, 116, 50, 50, 49, 49, 63]; // "SimpleTest2211?"
+const correctPassword = _p.map(c => String.fromCharCode(c)).join('');
 
-  if (!whopUser) {
-    alert("❌ Access denied. Please purchase access at https://whop.com/moneteer/");
-    window.location.href = "https://whop.com/moneteer/";
-    return;
+(function() {
+  const savedAuth = localStorage.getItem('simplePlanAuth');
+  if (savedAuth === correctPassword) return;
+
+  const userInput = prompt("🔒 This is a private demo. Email moneteer808@gmail.com with subject 'SimpleBizPlan Access' to get the password!");
+  if (userInput === correctPassword) {
+    localStorage.setItem('simplePlanAuth', correctPassword);
+    location.reload();
+  } else {
+    document.body.innerHTML = `
+      <div style="max-width:600px;margin:100px auto;text-align:center;font-family:Arial,sans-serif;padding:20px;">
+        <h2 style="color:#dc2626;">❌ Access Denied</h2>
+        <p>Email <a href="mailto:moneteer808@gmail.com">moneteer808@gmail.com</a> to request access.</p>
+        <button onclick="location.reload()" style="margin-top:20px;padding:10px 20px;background:#1e293b;color:white;border:none;border-radius:6px;cursor:pointer;">
+          Try Again
+        </button>
+      </div>
+    `;
+    throw new Error("Access denied");
   }
-
-  localStorage.setItem('whop_user', whopUser);
-  console.log("Whop User ID:", whopUser);
+})();
 </script>
 
 <div class="wrap">
@@ -284,7 +324,7 @@ function generatePlan(){
     out += `
       <hr style="border: 1px solid #ddd; margin: 40px 0;">
       <div style="text-align: center; font-size: 0.9em; color: #666; padding: 20px 0;">
-        <p>Generated with <strong>SimpleBizPlan Generator</strong> by <a href="https://moneteer.gumroad.com" target="_blank">Moneteer</a></p>
+        <p>Generated with <strong>SimpleBizPlan Generator</strong> by <a href="https://whop.com/moneteer/" target="_blank">Moneteer</a></p>
         <p>Connect: <a href="mailto:moneteer808@gmail.com">moneteer808@gmail.com</a></p>
       </div>
       `;
